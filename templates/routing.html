@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Routing | Team-X Amravati</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .route-card {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            border-left: 6px solid var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .route-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(4px);
+        }
+
+        .legend-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        #map {
+            height: 560px;
+            border-radius: var(--radius-md);
+        }
+
+        input {
+            background: rgba(0, 0, 0, 0.2) !important;
+            border: 1px solid var(--card-border) !important;
+            color: var(--text-main) !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: var(--radius-md) !important;
+            width: 100%;
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .input-icon-btn {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .input-icon-btn:hover {
+            color: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .directions-btn-container {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        @keyframes ping {
+            0% { transform: scale(1); opacity: 1; }
+            70%, 100% { transform: scale(3); opacity: 0; }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="wind"></i>
+                Team-X
+            </div>
+            <div class="city-badge">
+                <i data-lucide="map-pin"></i>
+                Amravati, MH
+            </div>
+            <nav>
+                <ul style="list-style: none;">
+                    <li><a href="/"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                    <li><a href="/forecast"><i data-lucide="bar-chart-3"></i> AQI Forecast</a></li>
+                    <li><a href="/routing" class="active"><i data-lucide="navigation"></i> Safe Routing</a></li>
+                    <li><a href="/sources"><i data-lucide="satellite"></i> Source Detection</a></li>
+                    <li><a href="/health"><i data-lucide="heart-pulse"></i> Health Advisory</a></li>
+                    <li><a href="/policy"><i data-lucide="scroll-text"></i> Policy Analysis</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Pollution-Aware Routing</h1>
+                <p class="text-muted">Dynamic pathfinding calibrated to Amravati's live air quality zones.</p>
+            </header>
+
+            <div class="grid-2" style="margin-top: 2.5rem;">
+                <!-- Controls -->
+                <div class="card">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Navigation Settings</h2>
+                    <label>Departure Point</label>
+                    <div class="input-group">
+                        <input type="text" id="start-node" value="Rajapeth" placeholder="Start Colony (Amravati)" oninput="window.teamxMap.updateDirectionsButtonVisibility()">
+                        <button class="input-icon-btn" title="Use Current Location" onclick="window.teamxMap.useCurrentLocation()">
+                            <i data-lucide="map-pin"></i>
+                        </button>
+                    </div>
+
+                    <label>Destination</label>
+                    <div class="input-group">
+                        <input type="text" id="end-node" value="Camp" placeholder="End Colony (Amravati)">
+                    </div>
+
+                    <button id="find-btn" class="btn" style="width: 100%;" onclick="window.teamxMap.calculateRoute()">
+                        <i data-lucide="search"></i> Calculate Safest Path
+                        <span id="route-spinner" style="display:none; margin-left: 0.5rem;"><i class="animate-spin"
+                                data-lucide="loader-2" style="width: 16px;"></i></span>
+                    </button>
+
+                    <div id="directions-btn-container" class="directions-btn-container">
+                        <button id="directions-btn" class="btn btn-secondary" style="width: 100%; background: var(--primary); color: #fff;" onclick="window.teamxMap.startNavigation()">
+                            <i data-lucide="navigation"></i> Start Live Directions
+                        </button>
+                    </div>
+
+                    <!-- Legend -->
+                    <div style="margin-top:2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border);">
+                        <h3
+                            style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 1rem;">
+                            Corridor Classifications</h3>
+                        <div class="legend-row">
+                            <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span>
+                                Cleanest</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#06b6d4;"></span> Safest
+                            </div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span>
+                                Balanced</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#f97316;"></span>
+                                Fastest</div>
+                            <div class="legend-item"><span class="legend-dot" style="background:#ef4444;"></span>
+                                Industrial</div>
+                        </div>
+                    </div>
+
+                    <!-- Route list -->
+                    <div id="route-results" style="margin-top:2.5rem; display:none;">
+                        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem;">Discovered Routes</h3>
+                        <div id="route-list"></div>
+                    </div>
+                </div>
+
+                <!-- Map -->
+                <div class="card" style="padding:0.5rem; overflow:hidden;">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/js/map.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

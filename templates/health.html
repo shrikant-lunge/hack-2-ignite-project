@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Advisory | Team-X Amravati</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .advisory-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .advisory-section h4 {
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .advisory-section p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.9375rem;
+        }
+
+        .pollutant-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 0.5rem 0.875rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .risk-bar {
+            height: 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-top: 0.75rem;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+        }
+
+        .risk-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .risk-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .tip-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .tip-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            transition: var(--transition);
+        }
+
+        .tip-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tip-card div.icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+
+        label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        input,
+        select {
+            background: rgba(0, 0, 0, 0.2) !important;
+            border: 1px solid var(--card-border) !important;
+            color: var(--text-main) !important;
+            padding: 0.875rem !important;
+            border-radius: var(--radius-md) !important;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            font-family: inherit;
+            font-size: 0.9375rem;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="wind"></i>
+                Team-X
+            </div>
+            <div class="city-badge">
+                <i data-lucide="map-pin"></i>
+                Amravati, MH
+            </div>
+            <nav>
+                <ul style="list-style: none;">
+                    <li><a href="/"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                    <li><a href="/forecast"><i data-lucide="bar-chart-3"></i> AQI Forecast</a></li>
+                    <li><a href="/routing"><i data-lucide="navigation"></i> Safe Routing</a></li>
+                    <li><a href="/sources"><i data-lucide="satellite"></i> Source Detection</a></li>
+                    <li><a href="/health" class="active"><i data-lucide="heart-pulse"></i> Health Advisory</a></li>
+                    <li><a href="/policy"><i data-lucide="scroll-text"></i> Policy Analysis</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Health Advisory</h1>
+                <p class="text-muted">Personalized safety recommendations powered by Groq Llama-3 AI.</p>
+            </header>
+
+            <div class="grid-2" style="margin-top: 2.5rem;">
+                <!-- Profile form -->
+                <div class="card">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem;">User Profile</h2>
+                    <form id="health-form" onsubmit="getAdvisory(event)">
+                        <label>Target Location</label>
+                        <input type="text" id="prof-location" value="Amravati" placeholder="e.g. Rajapeth, Camp..."
+                            required>
+
+                        <label>Age</label>
+                        <input type="number" id="prof-age" value="30" min="1" max="120" required>
+
+                        <label>Health Conditions</label>
+                        <input type="text" id="prof-conditions" placeholder="e.g. Asthma, Allergies (Optional)">
+
+                        <label>Activity Level</label>
+                        <select id="prof-activity">
+                            <option value="low">Sedentary / Indoor</option>
+                            <option value="moderate" selected>Moderate / Light Outdoor</option>
+                            <option value="high">High / Strenuous Outdoor</option>
+                        </select>
+
+                        <button type="submit" class="btn" style="width:100%;" id="submit-btn">
+                            <i data-lucide="sparkles"></i> Generate AI Advisory
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Results -->
+                <div class="card" id="results-card">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Personalized Advice</h2>
+                    <div id="advisory-placeholder" class="text-muted" style="text-align: center; padding: 3rem 0;">
+                        <i data-lucide="brain-circuit"
+                            style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.2;"></i>
+                        <p>Complete your profile to receive AI-generated health precautions.</p>
+                    </div>
+                    <div id="advisory-content" style="display:none;">
+                        <!-- Risk Score -->
+                        <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1.5rem;">
+                            <div id="risk-score" style="font-size:3.5rem; font-weight: 800; letter-spacing: -0.05em;">
+                            </div>
+                            <div style="flex: 1;">
+                                <div id="risk-badge" class="risk-badge"></div>
+                                <div class="risk-bar">
+                                    <div id="risk-bar-fill" class="risk-bar-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live AQI display -->
+                        <div id="live-aqi-block"
+                            style="margin-top:1.5rem; padding:1.25rem; background:rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius:12px;">
+                            <div style="font-size:0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;"
+                                class="text-muted">Live Conditions: <span id="live-aqi-loc"></span></div>
+                            <div id="live-aqi-value" style="font-size:1.5rem; font-weight:700; margin: 0.5rem 0;"></div>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="pollutant-chips"></div>
+                        </div>
+
+                        <!-- Advisory sections -->
+                        <div id="advisory-sections"></div>
+
+                        <!-- Quick tip cards -->
+                        <div id="tip-cards" class="tip-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const AQI_COLORS = { Low: '#10b981', Moderate: '#f59e0b', High: '#f97316', Severe: '#ef4444' };
+
+        function aqiColor(aqi) {
+            if (aqi <= 50) return '#10b981';
+            if (aqi <= 100) return '#f59e0b';
+            if (aqi <= 150) return '#f97316';
+            if (aqi <= 200) return '#ef4444';
+            return '#8b5cf6';
+        }
+
+        function structuredAdvice(aqi, profile) {
+            const risk = aqi > 200 ? 'Severe' : aqi > 150 ? 'High' : aqi > 100 ? 'Moderate' : 'Low';
+            const condRaw = (profile.conditions || "").toLowerCase();
+            const hasSensitive = ['asthma', 'copd', 'respiratory', 'cardiovascular', 'diabetes', 'allergy'].some(c => condRaw.includes(c));
+            const isVulnerable = profile.age < 12 || profile.age > 65 || hasSensitive;
+
+            const sections = [
+                {
+                    title: 'Current Situation',
+                    icon: 'info',
+                    text: `The environmental conditions in Amravati are currently "${risk}". ${isVulnerable ? 'Your profile indicates increased sensitivity; we recommend strict adherence to safety guidelines.' : 'Healthy individuals may continue normal activities but should remain vigilant.'}`
+                },
+                {
+                    title: 'Outdoor Guidelines',
+                    icon: 'door-open',
+                    text: aqi > 150 ? 'Extreme pollution detected. Cancel all non-essential outdoor travel. Wear high-grade respiratory protection if movement is mandatory.'
+                        : aqi > 100 ? 'Heightened pollution levels. Consider moving strenuous activities indoors. Avoid high-traffic zones.'
+                            : 'Air quality is generally acceptable. Minimal impact on outdoor plans expected.'
+                }
+            ];
+
+            const tips = [
+                { icon: 'droplets', text: 'Maintain high hydration levels to help clear inhaled particulates.' },
+                { icon: 'wind', text: 'Keep indoor spaces sealed during morning and evening rush hours.' }
+            ];
+
+            return { sections, tips };
+        }
+
+        async function getAdvisory(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="animate-spin" data-lucide="loader-2"></i> Thinking...';
+            lucide.createIcons();
+
+            const profile = {
+                location: document.getElementById('prof-location').value,
+                age: parseInt(document.getElementById('prof-age').value),
+                conditions: document.getElementById('prof-conditions').value,
+                activity: document.getElementById('prof-activity').value
+            };
+
+            try {
+                const res = await fetch('/api/health/advisory', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ profile })
+                });
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    document.getElementById('advisory-placeholder').style.display = 'none';
+                    document.getElementById('advisory-content').style.display = 'block';
+
+                    // Risk Score
+                    const lvl = data.risk_assessment.level;
+                    const score = data.risk_assessment.score;
+                    const color = AQI_COLORS[lvl] || '#fff';
+                    const scoreEl = document.getElementById('risk-score');
+                    scoreEl.innerText = `${Math.round(score)}`;
+                    scoreEl.style.color = color;
+
+                    const badge = document.getElementById('risk-badge');
+                    badge.innerText = `${lvl} Risk Level`;
+                    badge.style.background = `${color}15`;
+                    badge.style.color = color;
+                    badge.style.border = `1px solid ${color}33`;
+
+                    const fill = document.getElementById('risk-bar-fill');
+                    fill.style.width = `${score}%`;
+                    fill.style.background = `linear-gradient(90deg, ${color}cc, ${color})`;
+
+                    // Live AQI block
+                    document.getElementById('live-aqi-loc').innerText = profile.location;
+                    const aqi = data.current_aqi;
+                    const aqiEl = document.getElementById('live-aqi-value');
+                    aqiEl.innerText = `AQI ${aqi} — ${data.aqi_category}`;
+                    aqiEl.style.color = aqiColor(aqi);
+
+                    // Pollutant chips
+                    const chips = document.getElementById('pollutant-chips');
+                    chips.innerHTML = '';
+                    const p = data.pollutants || {};
+                    [['PM2.5', p.pm2_5], ['PM10', p.pm10], ['NO₂', p.no2]].forEach(([l, v]) => {
+                        if (v != null) chips.innerHTML += `<span class="pollutant-chip">${l}: ${parseFloat(v).toFixed(1)}</span>`;
+                    });
+
+                    // Sections
+                    const { sections, tips } = structuredAdvice(aqi, profile);
+                    const secEl = document.getElementById('advisory-sections');
+                    secEl.innerHTML = sections.map(s =>
+                        `<div class="advisory-section"><h4><i data-lucide="${s.icon}" style="width:16px;"></i>${s.title}</h4><p>${s.text}</p></div>`
+                    ).join('');
+
+                    // AI content
+                    if (data.advisory && !data.advisory.startsWith("Risk Level:") && data.advisory.length > 50) {
+                        secEl.innerHTML += `<div class="advisory-section" style="background: rgba(99, 102, 241, 0.05); padding: 1.25rem; border-radius: 12px; margin-top: 1.5rem; border: 1px dashed rgba(99, 102, 241, 0.3);">
+                            <h4 style="color: #818cf8;"><i data-lucide="bot" style="width:16px;"></i>Advanced AI Intelligence</h4>
+                            <p style="white-space:pre-wrap; color: var(--text-main); font-size: 0.9rem;">${data.advisory}</p>
+                        </div>`;
+                    }
+
+                    const tipEl = document.getElementById('tip-cards');
+                    tipEl.innerHTML = tips.map(t =>
+                        `<div class="tip-card"><div class="icon"><i data-lucide="${t.icon}"></i></div>${t.text}</div>`
+                    ).join('');
+
+                    lucide.createIcons();
+                }
+            } catch (err) {
+                document.getElementById('advisory-placeholder').innerHTML = '<p style="color:var(--aqi-unhealthy);">Error connecting to health intelligence services.</p>';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+                lucide.createIcons();
+            }
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

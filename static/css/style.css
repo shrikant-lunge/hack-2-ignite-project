@@ -1,0 +1,223 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap");
+
+:root {
+  --bg-base:        #080d0f;
+  --bg-surface:     #0d1518;
+  --bg-card:        #111b1e;
+  --border:         rgba(255,255,255,0.06);
+  --accent:         #00e5a0;
+  --accent-dim:     rgba(0,229,160,0.12);
+  --accent-glow:    rgba(0,229,160,0.25);
+  --text-primary:   #e8f0f2;
+  --text-secondary: #7a9ba8;
+  --text-muted:     #3d5a64;
+
+  --aqi-good:       #00e5a0;
+  --aqi-moderate:   #f5c542;
+  --aqi-sensitive:  #ff8c42;
+  --aqi-unhealthy:  #ff4f6b;
+
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Outfit', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+
+  /* Legacy CSS variables used in older Jinja2 templates */
+  --bg-primary: #080d0f;
+  --bg-secondary: #111b1e;
+  --bg-tertiary: #0d1518;
+  --accent-cyan: #00e5a0;
+  --accent-blue: #00e5a0;
+  --text-primary: #e8f0f2;
+  --text-secondary: #7a9ba8;
+  --border-subtle: rgba(255,255,255,0.06);
+  --border-glow: rgba(0,229,160,0.3);
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand {
+    font-family: var(--font-display);
+}
+
+/* ── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 99px; }
+
+/* ── Components ────────────────────────────── */
+.navbar {
+    background-color: var(--bg-surface) !important;
+    border-bottom: 1px solid var(--border);
+}
+
+.navbar-brand {
+    color: var(--text-primary) !important;
+    font-weight: 700;
+}
+
+.nav-link {
+    color: var(--text-secondary) !important;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--accent) !important;
+    background: var(--accent-dim);
+    border-radius: 6px;
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: none;
+    transition: border-color 0.2s;
+}
+
+.card:hover {
+    border-color: rgba(0,229,160,0.12);
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: #080d0f;
+    border: none;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    border-radius: 8px;
+    padding: 10px 20px;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent);
+    opacity: 0.88;
+    color: #080d0f;
+    transform: translateY(-1px);
+}
+
+.btn-outline-light {
+    color: var(--text-secondary);
+    border-color: var(--border);
+    font-family: var(--font-display);
+    border-radius: 8px;
+}
+
+.btn-outline-light:hover {
+    background-color: transparent;
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.form-control, .form-select {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-family: var(--font-body);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.table {
+    color: var(--text-primary);
+}
+
+.table-dark {
+    background-color: transparent;
+}
+
+.table-dark th, .table-dark td {
+    border-color: var(--border);
+    background-color: transparent;
+}
+
+.badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+}
+
+.bg-info { background-color: var(--accent-dim) !important; color: var(--accent) !important; border: 1px solid rgba(0,229,160,0.2); }
+.bg-warning { background-color: rgba(245, 197, 66, 0.12) !important; color: var(--aqi-moderate) !important; border: 1px solid rgba(245, 197, 66, 0.2); }
+.bg-danger { background-color: rgba(255, 79, 107, 0.12) !important; color: var(--aqi-unhealthy) !important; border: 1px solid rgba(255, 79, 107, 0.2); }
+.bg-success { background-color: var(--accent-dim) !important; color: var(--accent) !important; border: 1px solid rgba(0,229,160,0.2); }
+
+.list-group-item {
+    background-color: var(--bg-card);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+.text-muted { color: var(--text-muted) !important; }
+
+/* Map Widget Container */
+#map-container {
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+/* Leaflet Overrides */
+.leaflet-container {
+    background-color: var(--bg-base) !important;
+}
+
+.leaflet-popup-content-wrapper {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-body);
+}
+
+.leaflet-popup-tip {
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+}
+
+/* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(8, 13, 15, 0.8);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.spinner-border.text-primary {
+    color: var(--accent) !important;
+}

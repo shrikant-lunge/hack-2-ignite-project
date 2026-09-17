@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Analysis | Team-X Amravati</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .scenario-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.25rem;
+            margin-bottom: 0.75rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--card-border);
+        }
+
+        .scenario-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .scenario-item input {
+            width: 20px;
+            height: 20px;
+            margin-right: 1.25rem;
+            margin-bottom: 0;
+            accent-color: var(--primary);
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .stat-box:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-box h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .stat-val {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="wind"></i>
+                Team-X
+            </div>
+            <div class="city-badge">
+                <i data-lucide="map-pin"></i>
+                Amravati, MH
+            </div>
+            <nav>
+                <ul style="list-style: none;">
+                    <li><a href="/"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                    <li><a href="/forecast"><i data-lucide="bar-chart-3"></i> AQI Forecast</a></li>
+                    <li><a href="/routing"><i data-lucide="navigation"></i> Safe Routing</a></li>
+                    <li><a href="/sources"><i data-lucide="satellite"></i> Source Detection</a></li>
+                    <li><a href="/health"><i data-lucide="heart-pulse"></i> Health Advisory</a></li>
+                    <li><a href="/policy" class="active"><i data-lucide="scroll-text"></i> Policy Analysis</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Policy Simulation</h1>
+                <p class="text-muted">Proactive intervention modeling against Amravati's live environmental baseline.
+                </p>
+            </header>
+
+            <!-- Live Baseline -->
+            <div class="card" style="margin-top:2.5rem;">
+                <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Live Environmental Baseline</h2>
+                <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:1.25rem;" id="baseline-grid">
+                    <div class="stat-box">
+                        <h4>Current AQI</h4>
+                        <div class="stat-val" id="bl-aqi">—</div>
+                    </div>
+                    <div class="stat-box">
+                        <h4>PM2.5</h4>
+                        <div class="stat-val" id="bl-pm25">—</div>
+                    </div>
+                    <div class="stat-box">
+                        <h4>PM10</h4>
+                        <div class="stat-val" id="bl-pm10">—</div>
+                    </div>
+                    <div class="stat-box">
+                        <h4>NO₂</h4>
+                        <div class="stat-val" id="bl-no2">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 1rem;">Intervention Array</h2>
+                    <p class="text-muted" style="margin-bottom:1.5rem; font-size: 0.9375rem;">Select multiple policies
+                        to simulate their aggregate impact on urban air quality.</p>
+                    <form id="scenario-form" onsubmit="runSimulation(event)">
+                        <div id="scenarios-list">Loading computational models...</div>
+                        <button type="submit" class="btn" style="width:100%; margin-top:1.5rem;">
+                            <i data-lucide="play"></i> Execute Simulation
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card" id="results-card" style="display:none; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; top:0; right:0; padding: 1rem; color: var(--aqi-good); opacity: 0.1;">
+                        <i data-lucide="trending-down" style="width: 120px; height: 120px;"></i>
+                    </div>
+                    <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Projected Outcomes</h2>
+                    <div style="text-align:center; margin-bottom:2.5rem;">
+                        <h3 class="text-muted"
+                            style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                            Estimated AQI Reduction</h3>
+                        <div id="aqi-reduction"
+                            style="font-size:4.5rem; font-weight:900; color:var(--aqi-good); letter-spacing: -0.05em;">—
+                        </div>
+                        <div class="text-muted" style="font-size:0.875rem;">Units improved from baseline</div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+                        <div class="stat-box">
+                            <h4>Atmospheric Improvement</h4>
+                            <div class="stat-val" style="color:var(--secondary);" id="pct-improved">—%</div>
+                        </div>
+                        <div class="stat-box">
+                            <h4>Healthcare Load Drop</h4>
+                            <div class="stat-val" style="color:var(--primary);" id="health-benefits">—%</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--card-border);">
+                        <h4
+                            style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 1.25rem;">
+                            Sub-Pollutant Variance</h4>
+                        <div id="pollutant-delta-grid"
+                            style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchBaseline();
+            fetchScenarios();
+        });
+
+        async function fetchBaseline() {
+            try {
+                const res = await fetch('/api/forecast/current?location=amravati');
+                const data = await res.json();
+                if (data.status === 'success') {
+                    const d = data.data;
+                    document.getElementById('bl-aqi').textContent = d.aqi;
+                    document.getElementById('bl-pm25').textContent = d.pm2_5?.toFixed(1) ?? '—';
+                    document.getElementById('bl-pm10').textContent = d.pm10?.toFixed(1) ?? '—';
+                    document.getElementById('bl-no2').textContent = d.no2?.toFixed(1) ?? '—';
+                    colorStat('bl-aqi', d.aqi);
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function colorStat(id, aqi) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const c = aqi <= 50 ? '#10b981' : aqi <= 100 ? '#f59e0b' : aqi <= 150 ? '#f97316' : '#ef4444';
+            el.style.color = c;
+        }
+
+        async function fetchScenarios() {
+            try {
+                const res = await fetch('/api/policy/scenarios');
+                const data = await res.json();
+                if (data.status === 'success') {
+                    const list = document.getElementById('scenarios-list');
+                    list.innerHTML = '';
+                    for (const [key, details] of Object.entries(data.scenarios)) {
+                        list.innerHTML += `
+                            <label class="scenario-item">
+                                <input type="checkbox" name="policy" value="${key}">
+                                <div>
+                                    <div style="font-weight: 700; color: var(--text-main);">${details.name}</div>
+                                    <div class="text-muted" style="font-size:0.8125rem; margin-top: 0.25rem;">Difficulty: ${details.difficulty_score}/10 &bull; ${details.description}</div>
+                                </div>
+                            </label>`;
+                    }
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        async function runSimulation(e) {
+            e.preventDefault();
+            const checks = document.querySelectorAll('input[name="policy"]:checked');
+            const selected = Array.from(checks).map(cb => cb.value);
+            if (selected.length === 0) return;
+
+            const btn = e.target.querySelector('button');
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="animate-spin" data-lucide="loader-2"></i> Processing...';
+            lucide.createIcons();
+
+            try {
+                const res = await fetch('/api/policy/simulate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ policies: selected, location: 'amravati' })
+                });
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    const im = data.impact;
+                    document.getElementById('aqi-reduction').innerText = `-${im.aqi_reduction}`;
+                    document.getElementById('pct-improved').innerText = `${im.percent_improved}%`;
+                    document.getElementById('health-benefits').innerText = `${im.health_benefits_percent}%`;
+                    document.getElementById('results-card').style.display = 'block';
+
+                    const grid = document.getElementById('pollutant-delta-grid');
+                    grid.innerHTML = '';
+                    const b = im.baseline;
+                    const s = im.simulated;
+                    [['PM2.5', 'pm25'], ['PM10', 'pm10'], ['NO₂', 'no2'], ['SO₂', 'so2'], ['CO', 'co'], ['O₃', 'o3']].forEach(([label, key]) => {
+                        if (b[key] == null) return;
+                        const delta = (s[key] - b[key]).toFixed(1);
+                        const color = delta <= 0 ? '#10b981' : '#ef4444';
+                        grid.innerHTML += `<div class="stat-box" style="padding:1rem;">
+                            <h4>${label}</h4>
+                            <div style="color:${color}; font-weight:800; font-size: 1.25rem;">${delta > 0 ? '+' : ''}${delta}</div>
+                        </div>`;
+                    });
+                }
+            } catch (err) { console.error(err); } finally {
+                btn.disabled = false;
+                btn.innerHTML = original;
+                lucide.createIcons();
+            }
+        }
+    </script>
+</body>
+
+</html>

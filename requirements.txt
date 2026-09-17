@@ -1,0 +1,43 @@
+# requirements.txt - All free, open-source packages
+
+# Core Framework
+Flask
+Flask-CORS
+Werkzeug
+Jinja2
+
+# Machine Learning
+tensorflow
+scikit-learn
+numpy
+pandas
+
+# Data Visualization
+matplotlib
+plotly
+
+# HTTP Requests
+requests
+
+# Image Processing
+Pillow
+
+# Geospatial Data (for satellite imagery)
+rasterio
+xarray
+netCDF4
+
+# Utilities
+python-dateutil
+pytz
+schedule
+python-dotenv
+
+# Firebase
+firebase-admin
+
+# Email Service
+# For SMTP email sending (built-in, no install needed: smtplib)
+# But we'll use optional dependencies for better email handling:
+email-validator
+

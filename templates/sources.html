@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Source Detection | Team-X Amravati</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .source-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .source-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .source-name {
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .source-type {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .source-confidence {
+            font-size: 0.9375rem;
+            color: var(--aqi-unhealthy);
+            font-weight: 800;
+        }
+
+        .intensity-bar {
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-top: 0.75rem;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+        }
+
+        .intensity-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--aqi-moderate), var(--aqi-unhealthy));
+        }
+
+        #source-map {
+            height: 520px;
+            border-radius: var(--radius-md);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="wind"></i>
+                Team-X
+            </div>
+            <div class="city-badge">
+                <i data-lucide="map-pin"></i>
+                Amravati, MH
+            </div>
+            <nav>
+                <ul style="list-style: none;">
+                    <li><a href="/"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                    <li><a href="/forecast"><i data-lucide="bar-chart-3"></i> AQI Forecast</a></li>
+                    <li><a href="/routing"><i data-lucide="navigation"></i> Safe Routing</a></li>
+                    <li><a href="/sources" class="active"><i data-lucide="satellite"></i> Source Detection</a></li>
+                    <li><a href="/health"><i data-lucide="heart-pulse"></i> Health Advisory</a></li>
+                    <li><a href="/policy"><i data-lucide="scroll-text"></i> Policy Analysis</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Satellite Source Detection</h1>
+                <p class="text-muted">High-precision analysis of localized pollution hotspots in Amravati.</p>
+            </header>
+
+            <div class="grid-2" style="margin-top: 2.5rem;">
+                <div class="card">
+                    <button class="btn" style="width: 100%;" id="run-detection" onclick="runDetection()">
+                        <i data-lucide="radar"></i> Run Remote Sensing Scan
+                    </button>
+                    <div id="detection-status"
+                        style="margin: 1.5rem 0; padding: 1rem; background: rgba(99, 102, 241, 0.05); border: 1px dashed rgba(99, 102, 241, 0.3); border-radius: 12px; font-size: 0.875rem;"
+                        class="text-muted">
+                        Initializing environmental monitoring array...
+                    </div>
+
+                    <div id="sources-results" style="margin-top:2.5rem; display:none;">
+                        <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 1.25rem;">Detected Anomalies
+                            <span id="source-count" class="text-muted"
+                                style="font-size:0.875rem; font-weight: 400; margin-left: 0.5rem;"></span></h3>
+                        <div id="sources-list"></div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding:0.5rem; overflow:hidden;">
+                    <div id="source-map"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // Map centered on Amravati
+        const map = L.map('source-map').setView([20.9320, 77.7523], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap &copy; CARTO'
+        }).addTo(map);
+
+        const activeMarkers = [];
+
+        function getHotspotColor(score) {
+            if (score > 0.8) return '#ef4444';
+            if (score > 0.6) return '#f97316';
+            if (score > 0.4) return '#f59e0b';
+            return '#10b981';
+        }
+
+        async function runDetection() {
+            const btn = document.getElementById('run-detection');
+            const status = document.getElementById('detection-status');
+            const results = document.getElementById('sources-results');
+            const list = document.getElementById('sources-list');
+            const count = document.getElementById('source-count');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="animate-spin" data-lucide="loader-2"></i> Scanning...';
+            lucide.createIcons();
+
+            status.textContent = 'Processing live telemetry and calibrating predictive models for the Amravati industrial corridor...';
+            list.innerHTML = '';
+            results.style.display = 'none';
+            activeMarkers.forEach(m => map.removeLayer(m));
+            activeMarkers.length = 0;
+
+            try {
+                const res = await fetch('/api/source/detect');
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    const sources = data.detected_sources;
+                    status.innerHTML = `<i data-lucide="check-circle" style="width: 16px; color: var(--aqi-good); vertical-align: middle;"></i> Analysis complete. <b>${sources.length}</b> significant emission clusters identified.`;
+                    lucide.createIcons();
+
+                    count.textContent = `(${sources.length} nodes found)`;
+
+                    sources.forEach(src => {
+                        const color = getHotspotColor(src.concentration_score);
+                        const radius = 10 + src.concentration_score * 25;
+
+                        // Map marker with pulse effect
+                        const circle = L.circleMarker([src.latitude, src.longitude], {
+                            radius, color: '#fff', fillColor: color, fillOpacity: 0.6, weight: 2
+                        }).bindPopup(`
+                            <div style="padding: 10px;">
+                                <b style="font-size: 1.1em; color: ${color};">${src.name || src.source_type}</b><br>
+                                <span style="font-size: 0.85em; color: #999;">${src.source_type}</span><hr style="margin: 8px 0; border: 0; border-top: 1px solid #333;">
+                                AQI Impact: <b style="color: #fff;">+${src.aqi_contribution}</b><br>
+                                Detection Confidence: <b>${(src.confidence * 100).toFixed(0)}%</b>
+                            </div>
+                        `).addTo(map);
+                        activeMarkers.push(circle);
+
+                        // Side panel item
+                        list.innerHTML += `
+                            <div class="source-item">
+                                <div style="flex:1;">
+                                    <div class="source-name"><i data-lucide="flame" style="width:14px;"></i>${src.name || src.source_type}</div>
+                                    <div class="source-type">${src.source_type}</div>
+                                    <div class="intensity-bar">
+                                        <div class="intensity-fill" style="width:${Math.round(src.concentration_score * 100)}%;background:${color};"></div>
+                                    </div>
+                                </div>
+                                <div style="text-align:right; margin-left:1.5rem; min-width:90px;">
+                                    <div class="source-confidence">+${src.aqi_contribution} AQI</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">CONF: ${(src.confidence * 100).toFixed(0)}%</div>
+                                </div>
+                            </div>`;
+                    });
+
+                    results.style.display = 'block';
+                    lucide.createIcons();
+
+                    if (activeMarkers.length > 0) {
+                        const group = L.featureGroup(activeMarkers);
+                        map.fitBounds(group.getBounds(), { padding: [60, 60] });
+                    }
+                }
+            } catch (err) {
+                status.innerHTML = '<span style="color: var(--aqi-unhealthy);">Critical error in remote sensing pipeline.</span>';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i data-lucide="radar"></i> Run Remote Sensing Scan';
+                lucide.createIcons();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', runDetection);
+    </script>
+</body>
+
+</html>

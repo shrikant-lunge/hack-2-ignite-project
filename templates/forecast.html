@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQI Forecast | Team-X Amravati</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="wind"></i>
+                Team-X
+            </div>
+            <div class="city-badge">
+                <i data-lucide="map-pin"></i>
+                Amravati, MH
+            </div>
+            <nav>
+                <ul style="list-style: none;">
+                    <li><a href="/"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                    <li><a href="/forecast" class="active"><i data-lucide="bar-chart-3"></i> AQI Forecast</a></li>
+                    <li><a href="/routing"><i data-lucide="navigation"></i> Safe Routing</a></li>
+                    <li><a href="/sources"><i data-lucide="satellite"></i> Source Detection</a></li>
+                    <li><a href="/health"><i data-lucide="heart-pulse"></i> Health Advisory</a></li>
+                    <li><a href="/policy"><i data-lucide="scroll-text"></i> Policy Analysis</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>72-Hour AQI Forecast</h1>
+                <p class="text-muted">Advanced predictive modeling for Amravati's atmosphere.</p>
+            </header>
+
+            <div class="card" style="margin-top: 2.5rem;">
+                <div style="display:flex; align-items:center; gap:1.25rem; margin-bottom:2rem;">
+                    <div style="flex: 1; max-width: 320px;">
+                        <label
+                            style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Analytical
+                            Location</label>
+                        <input type="text" id="location-input" value="Amravati" placeholder="Enter colony or city..."
+                            style="margin-bottom: 0; background: rgba(0,0,0,0.2) !important; border: 1px solid var(--card-border) !important; color: var(--text-main) !important; padding: 0.75rem 1rem !important; border-radius: var(--radius-md) !important; width: 100%;">
+                    </div>
+                    <button class="btn" style="margin-top: 1.25rem;" onclick="window.auralisForecast.loadForecast()">
+                        <i data-lucide="refresh-cw" style="width: 18px; height: 18px;"></i> Update Model
+                    </button>
+                    <span id="forecast-location-badge" class="text-muted"
+                        style="font-size:0.875rem; margin-top: 1.25rem;"></span>
+                </div>
+
+                <div style="height: 400px; width: 100%;" class="chart-container">
+                    <canvas id="forecastChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="font-size: 1.125rem; margin-bottom: 1.25rem;">Scale Legend</h2>
+                <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+                    <span
+                        style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--aqi-good); font-weight: 600;"><i
+                            data-lucide="smile" style="width: 16px;"></i> Good</span>
+                    <span
+                        style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--aqi-moderate); font-weight: 600;"><i
+                            data-lucide="meh" style="width: 16px;"></i> Moderate</span>
+                    <span
+                        style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--aqi-unhealthy-sensitive); font-weight: 600;"><i
+                            data-lucide="frown" style="width: 16px;"></i> Sensitive</span>
+                    <span
+                        style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--aqi-unhealthy); font-weight: 600;"><i
+                            data-lucide="frown" style="width: 16px;"></i> Unhealthy</span>
+                    <span
+                        style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--aqi-very-unhealthy); font-weight: 600;"><i
+                            data-lucide="alert-triangle" style="width: 16px;"></i> Very Unhealthy</span>
+                    <span
+                        style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--aqi-hazardous); font-weight: 600;"><i
+                            data-lucide="alert-octagon" style="width: 16px;"></i> Hazardous</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/charts.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

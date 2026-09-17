@@ -1,0 +1,60 @@
+# Duplicate files
+LICENSE copy
+test_apis.ps1
+
+# Environment & Secrets
+.env
+*.env
+Keys/
+Keys/.env
+Keys/eco-stride2026.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+eggs/
+*.egg
+.Python
+env/
+venv/
+.venv/
+pip-wheel-metadata/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node
+node_modules/
+package-lock.json
+
+# Local storage data (runtime generated)
+local_storage/*.json
+
+# Temporary / test files
+tmp_*.py
+verify_*.py
+test_*.py
+
+# Database
+*.db
+database/
+
+# Logs
+*.log
+
+# Agents
+.agents/

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team-X | Amravati Air Quality Dashboard</title>
+    <meta name="description" content="Real-time AQI monitoring and pollution intelligence for Amravati, Maharashtra.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="wind"></i>
+                Team-X
+            </div>
+            <div class="city-badge">
+                <i data-lucide="map-pin"></i>
+                Amravati, MH
+            </div>
+            <nav>
+                <ul style="list-style: none;">
+                    <li><a href="/" class="active"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                    <li><a href="/forecast"><i data-lucide="bar-chart-3"></i> AQI Forecast</a></li>
+                    <li><a href="/routing"><i data-lucide="navigation"></i> Safe Routing</a></li>
+                    <li><a href="/sources"><i data-lucide="satellite"></i> Source Detection</a></li>
+                    <li><a href="/health"><i data-lucide="heart-pulse"></i> Health Advisory</a></li>
+                    <li><a href="/policy"><i data-lucide="scroll-text"></i> Policy Analysis</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Amravati Dashboard</h1>
+                <p class="text-muted">Real-time air quality monitoring — Amravati, Maharashtra</p>
+            </header>
+
+            <div class="grid-2" style="margin-top: 2.5rem;">
+                <!-- AQI Overview Card -->
+                <div class="card aqi-display">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Current AQI Index</h2>
+                    <p id="dashboard-location" class="text-muted" style="margin-bottom:2rem; font-size: 0.875rem;">
+                        Fetching live data...</p>
+
+                    <div class="aqi-circle" id="aqi-circle-ui" style="position: relative;">
+                        <span class="aqi-value" id="current-aqi">--</span>
+                        <span id="aqi-label"
+                            style="font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Loading...</span>
+                    </div>
+
+                    <div id="pollutant-grid"
+                        style="display:grid; grid-template-columns: repeat(2, 1fr); gap:1rem; margin-top:2rem;">
+                    </div>
+                </div>
+
+                <!-- Map Card -->
+                <div class="card" style="padding:0.5rem; overflow:hidden;">
+                    <div id="map" style="height:440px; border-radius: var(--radius-md);"></div>
+                </div>
+            </div>
+
+            <div class="card" style="display: flex; align-items: center; gap: 1.5rem;">
+                <div
+                    style="background: rgba(6, 182, 212, 0.1); padding: 1rem; border-radius: 12px; color: var(--secondary);">
+                    <i data-lucide="shield-check" style="width: 32px; height: 32px;"></i>
+                </div>
+                <div>
+                    <h2 style="font-size: 1.125rem; margin-bottom: 0.25rem;">AI Health Insights</h2>
+                    <p class="text-muted" style="font-size: 0.9375rem;">Get personalized safety recommendations based on
+                        your profile and live AQI.
+                        <a href="/health"
+                            style="color:var(--secondary); text-decoration: none; font-weight: 500; margin-left: 0.5rem;">View
+                            Advisory <i data-lucide="arrow-right"
+                                style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i></a>
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
