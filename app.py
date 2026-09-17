@@ -8,21 +8,14 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 app = Flask(__name__)
 
-# Configure CORS explicitly for both localhost and 127.0.0.1
+# Configure CORS - allow all origins for deployment
 CORS(app, 
      resources={
          r"/api/*": {
-             "origins": [
-                 "http://localhost:5173",
-                 "http://localhost:3000",
-                 "http://127.0.0.1:5173",
-                 "http://127.0.0.1:3000",
-                 "http://localhost:5000",
-                 "http://127.0.0.1:5000",
-             ],
+             "origins": "*",
              "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
              "allow_headers": ["Content-Type", "Authorization"],
-             "supports_credentials": True,
+             "supports_credentials": False,
              "max_age": 3600
          }
      }
@@ -1162,6 +1155,9 @@ def delete_admin_report(report_id):
 
 
 if __name__ == '__main__':
-    from config import PORT, HOST, DEBUG
-    print(f"Starting Team-X project on http://{HOST}:{PORT}")
-    app.run(debug=DEBUG, host=HOST, port=PORT)
+    port = int(os.environ.get('PORT', 5000))
+    host = os.environ.get('HOST', '0.0.0.0')
+    debug = os.environ.get('DEBUG', 'false').lower() == 'true'
+    print(f"Starting Team-X project on http://{host}:{port}")
+    app.run(debug=debug, host=host, port=port)
+
