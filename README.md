@@ -38,6 +38,72 @@ EcoStride provides six core capabilities through a unified web dashboard:
 | **Policy Simulation** | Simulate the AQI impact of government interventions (odd-even, CNG mandates, green zones) |
 | **Alert & Community System** | Subscribe to AQI threshold alerts via email/SMS; file community pollution reports |
 
+### Prototype Images
+
+#### `Intro Page`
+
+![Screenshot 2026-09-18 at 11.38.06 AM](<prototype-images/Screenshot 2026-09-18 at 11.38.06 AM.png>)
+
+#### `Dashboard`
+
+![Screenshot 2026-09-18 at 11.38.46 AM](<prototype-images/Screenshot 2026-09-18 at 11.38.46 AM.png>)
+
+#### `AQI Forecasting Page`
+
+![Screenshot 2026-09-18 at 11.39.02 AM](<prototype-images/Screenshot 2026-09-18 at 11.39.02 AM.png>)
+
+#### `Downloaded PDF Format Report`
+
+![Screenshot 2026-09-18 at 11.39.04 AM](<prototype-images/Screenshot 2026-09-18 at 11.39.04 AM.png>)
+
+#### `Route-Planner`
+
+![Screenshot 2026-09-18 at 11.39.31 AM](<prototype-images/Screenshot 2026-09-18 at 11.39.31 AM.png>)
+
+#### `Routes page`
+
+![Screenshot 2026-09-18 at 11.39.56 AM](<prototype-images/Screenshot 2026-09-18 at 11.39.56 AM.png>)
+
+#### `5 Routes`
+
+![Screenshot 2026-09-18 at 11.40.01 AM](<prototype-images/Screenshot 2026-09-18 at 11.40.01 AM.png>)
+
+#### `Safe Zone in Location`
+
+![Screenshot 2026-09-18 at 11.40.23 AM](<prototype-images/Screenshot 2026-09-18 at 11.40.23 AM.png>)
+
+#### `Safe Zone in Location
+
+![Screenshot 2026-09-18 at 11.40.35 AM](<prototype-images/Screenshot 2026-09-18 at 11.40.35 AM.png>)
+
+#### `Safe Zone in Location`
+
+![Screenshot 2026-09-18 at 11.41.04 AM](<prototype-images/Screenshot 2026-09-18 at 11.41.04 AM.png>)
+
+#### `Admin Login`
+
+![Screenshot 2026-09-18 at 11.41.12 AM](<prototype-images/Screenshot 2026-09-18 at 11.41.12 AM.png>)
+
+#### `Admin Dashboard`
+
+![Screenshot 2026-09-18 at 11.41.15 AM](<prototype-images/Screenshot 2026-09-18 at 11.41.15 AM.png>)
+
+#### `Admin- Brodcast Email`
+
+![Screenshot 2026-09-18 at 11.41.25 AM](<prototype-images/Screenshot 2026-09-18 at 11.41.25 AM.png>)
+
+#### `Admin- Active messages`
+
+![Screenshot 2026-09-18 at 11.41.44 AM](<prototype-images/Screenshot 2026-09-18 at 11.41.44 AM.png>)
+
+#### `Screenshot 2026-09-18 at 11.41.50 AM.png`
+
+![Screenshot 2026-09-18 at 11.41.50 AM](<prototype-images/Screenshot 2026-09-18 at 11.41.50 AM.png>)
+
+#### `The mail recevied from Admin`
+
+![Screenshot 2026-09-18 at 11.43.49 AM](<prototype-images/Screenshot 2026-09-18 at 11.43.49 AM.png>)
+
 ### Tech Stack
 
 #### Backend
