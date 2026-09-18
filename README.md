@@ -1,5 +1,9 @@
 # 🌿 EcoStride — Environmental Health & Safe Routing Platform
+## Prototype Video
 
+[Watch the EcoStride prototype video](https://drive.google.com/file/d/1y3ol3qjNgeL8zb2o5f2qHCXQMqmUCzor/view?usp=drivesdk)
+
+---
 > **EcoStride** is a real-time Air Quality Index (AQI) monitoring, forecasting, and eco-friendly routing platform. It helps citizens, health professionals, and policy makers understand air pollution, plan safe routes, and simulate the impact of environmental policies — across any city in India and globally.
 
 ---
@@ -7,7 +11,6 @@
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
-   - [Prototype Video](#prototype-video)
 2. [Project Structure](#2-project-structure)
 3. [Data Flow & Inputs](#3-data-flow--inputs)
 4. [Configuration & Environment](#4-configuration--environment)
@@ -94,12 +97,6 @@ Standalone HTML pages served directly by Flask using vanilla JS + Leaflet. These
           ├── OSRM (open-source routing engine)
           └── Groq API / Ollama (LLM health advisory)
 ```
-
----
-
-## Prototype Video
-
-[Watch the EcoStride prototype video](https://drive.google.com/file/d/1y3ol3qjNgeL8zb2o5f2qHCXQMqmUCzor/view?usp=drivesdk)
 
 ---
 
@@ -713,103 +710,3 @@ No CI/CD pipeline is currently configured. Recommended pipeline stages for futur
 - [ ] Integrate real satellite imagery via NASA MODIS / Sentinel-5P for pollution source mapping
 
 ---
-
-*Generated: 2026-03-15 | EcoStride — Environmental Health & Safe Routing Platform*
-
-```
-EcoStride
-├─ app.py
-├─ auth.py
-├─ AUTH_SYSTEM.md
-├─ background_tasks.py
-├─ eco-stride2026.json
-├─ FIREBASE_SETUP.md
-├─ frontend
-│  ├─ eslint.config.js
-│  ├─ eslint_output.txt
-│  ├─ index.html
-│  ├─ package-lock.json
-│  ├─ package.json
-│  ├─ public
-│  │  ├─ favicon.svg
-│  │  └─ icons.svg
-│  ├─ README.md
-│  ├─ src
-│  │  ├─ apiConfig.js
-│  │  ├─ App.css
-│  │  ├─ App.jsx
-│  │  ├─ assets
-│  │  │  ├─ hero.png
-│  │  │  ├─ react.svg
-│  │  │  └─ vite.svg
-│  │  ├─ components
-│  │  │  ├─ Layout.jsx
-│  │  │  ├─ MapWidget.jsx
-│  │  │  ├─ ProtectedRoute.jsx
-│  │  │  └─ Sidebar.jsx
-│  │  ├─ context
-│  │  │  ├─ AuthContext.jsx
-│  │  │  └─ LocationContext.jsx
-│  │  ├─ hooks
-│  │  │  └─ useLocation.js
-│  │  ├─ index.css
-│  │  ├─ main.jsx
-│  │  ├─ pages
-│  │  │  ├─ Community.jsx
-│  │  │  ├─ Compare.jsx
-│  │  │  ├─ Dashboard.jsx
-│  │  │  ├─ Landing.jsx
-│  │  │  ├─ Policy.jsx
-│  │  │  ├─ Predict.jsx
-│  │  │  ├─ ProfileSetup.jsx
-│  │  │  ├─ Routing.jsx
-│  │  │  └─ SafeZones.jsx
-│  │  ├─ styles
-│  │  │  ├─ Landing.css
-│  │  │  └─ ProfileSetup.css
-│  │  └─ utils
-│  │     └─ firebase.js
-│  └─ vite.config.js
-├─ IMPLEMENTATION_SUMMARY.md
-├─ LICENSE
-├─ models
-│  ├─ forecasting.py
-│  ├─ health_advisory.py
-│  ├─ policy_analysis.py
-│  ├─ routing.py
-│  ├─ source_detection.py
-│  └─ __init__.py
-├─ QUICKSTART.md
-├─ README.md
-├─ requirements.txt
-├─ run_setup.py
-├─ services
-│  └─ alert_service.py
-├─ static
-│  ├─ css
-│  │  └─ style.css
-│  ├─ images
-│  │  └─ EcoStride_Antigravity_Prompt.md
-│  └─ js
-│     ├─ charts.js
-│     ├─ main.js
-│     └─ map.js
-├─ templates
-│  ├─ forecast.html
-│  ├─ health.html
-│  ├─ index.html
-│  ├─ policy.html
-│  ├─ routing.html
-│  └─ sources.html
-├─ test_api.py
-├─ test_apis.ps1
-├─ test_community.py
-├─ test_routing.py
-├─ tmp_verify_backend.py
-├─ tmp_verify_backend_sleep.py
-├─ VERIFICATION_CHECKLIST.md
-├─ verify_api_accuracy.py
-├─ verify_dynamic_routing.py
-└─ verify_fix.py
-
-```
