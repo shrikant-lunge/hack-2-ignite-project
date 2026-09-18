@@ -7,6 +7,7 @@
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
+   - [Prototype Video](#prototype-video)
 2. [Project Structure](#2-project-structure)
 3. [Data Flow & Inputs](#3-data-flow--inputs)
 4. [Configuration & Environment](#4-configuration--environment)
@@ -93,6 +94,12 @@ Standalone HTML pages served directly by Flask using vanilla JS + Leaflet. These
           ├── OSRM (open-source routing engine)
           └── Groq API / Ollama (LLM health advisory)
 ```
+
+---
+
+## Prototype Video
+
+[Watch the EcoStride prototype video](https://drive.google.com/file/d/1y3ol3qjNgeL8zb2o5f2qHCXQMqmUCzor/view?usp=drivesdk)
 
 ---
 
